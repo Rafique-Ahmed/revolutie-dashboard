@@ -80,9 +80,9 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         try {
           await authApi.logout();
-        }catch (error) {
-  console.error('Logout error:', error);
-} finally {
+        } catch (error) {
+          console.error('Logout error:', error);
+        } finally {
           localStorage.removeItem('token');
           set({ user: null, token: null, isAuthenticated: false });
         }
