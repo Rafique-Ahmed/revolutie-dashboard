@@ -39,18 +39,21 @@ export interface AnalyticsData {
 }
 
 export const dashboardApi = {
-  getStats: () =>
-    api.get<ApiResponse<DashboardStats>>('/dashboard/stats'),
+  getStats: () => api.get<ApiResponse<DashboardStats>>('/dashboard/stats'),
 
-  getCharts: () =>
-    api.get<ApiResponse<ChartData>>('/dashboard/charts'),
+  getCharts: () => api.get<ApiResponse<ChartData>>('/dashboard/charts'),
 
-  getActivity: () =>
-    api.get<ApiResponse<Activity[]>>('/dashboard/activity'),
+  getActivity: () => api.get<ApiResponse<Activity[]>>('/dashboard/activity'),
 
-  getAnalytics: () =>
-    api.get<ApiResponse<AnalyticsData>>('/dashboard/analytics'),
+  getAnalytics: () => api.get<ApiResponse<AnalyticsData>>('/dashboard/analytics'),
 
   getAll: () =>
-    api.get<ApiResponse<{ stats: DashboardStats; charts: ChartData; activity: Activity[]; analytics: AnalyticsData }>>('/dashboard'),
+    api.get<
+      ApiResponse<{
+        stats: DashboardStats;
+        charts: ChartData;
+        activity: Activity[];
+        analytics: AnalyticsData;
+      }>
+    >('/dashboard'),
 };
