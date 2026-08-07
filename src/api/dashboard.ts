@@ -31,6 +31,13 @@ export interface Activity {
   time: string;
 }
 
+export interface AnalyticsData {
+  monthly_revenue: number;
+  monthly_growth: number;
+  active_sessions: number;
+  conversion_rate: number;
+}
+
 export const dashboardApi = {
   getStats: () =>
     api.get<ApiResponse<DashboardStats>>('/dashboard/stats'),
@@ -42,8 +49,8 @@ export const dashboardApi = {
     api.get<ApiResponse<Activity[]>>('/dashboard/activity'),
 
   getAnalytics: () =>
-    api.get<ApiResponse<any>>('/dashboard/analytics'),
+    api.get<ApiResponse<AnalyticsData>>('/dashboard/analytics'),
 
   getAll: () =>
-    api.get<ApiResponse<{ stats: DashboardStats; charts: ChartData; activity: Activity[] }>>('/dashboard'),
+    api.get<ApiResponse<{ stats: DashboardStats; charts: ChartData; activity: Activity[]; analytics: AnalyticsData }>>('/dashboard'),
 };
