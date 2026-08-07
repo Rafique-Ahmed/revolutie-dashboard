@@ -45,8 +45,7 @@ export interface NotificationPreferences {
 
 export const settingsApi = {
   // General Settings
-  getGeneral: () =>
-    api.get<ApiResponse<GeneralSettings>>('/settings/general'),
+  getGeneral: () => api.get<ApiResponse<GeneralSettings>>('/settings/general'),
 
   updateGeneral: (data: Partial<GeneralSettings>) =>
     api.put<ApiResponse<GeneralSettings>>('/settings/general', data),
@@ -60,8 +59,7 @@ export const settingsApi = {
   },
 
   // Profile Settings
-  getProfile: () =>
-    api.get<ApiResponse<ProfileSettings>>('/settings/profile'),
+  getProfile: () => api.get<ApiResponse<ProfileSettings>>('/settings/profile'),
 
   updateProfile: (data: Partial<ProfileSettings>) =>
     api.put<ApiResponse<ProfileSettings>>('/settings/profile', data),
@@ -75,17 +73,18 @@ export const settingsApi = {
   },
 
   // Security Settings
-  changePassword: (data: { current_password: string; password: string; password_confirmation: string }) =>
-    api.post<ApiResponse<null>>('/settings/change-password', data),
+  changePassword: (data: {
+    current_password: string;
+    password: string;
+    password_confirmation: string;
+  }) => api.post<ApiResponse<null>>('/settings/change-password', data),
 
-  getTwoFactor: () =>
-    api.get<ApiResponse<SecuritySettings>>('/settings/2fa'),
+  getTwoFactor: () => api.get<ApiResponse<SecuritySettings>>('/settings/2fa'),
 
   enableTwoFactor: () =>
     api.post<ApiResponse<{ enabled: boolean; secret: string }>>('/settings/2fa/enable'),
 
-  disableTwoFactor: () =>
-    api.post<ApiResponse<null>>('/settings/2fa/disable'),
+  disableTwoFactor: () => api.post<ApiResponse<null>>('/settings/2fa/disable'),
 
   // Notification Preferences
   getNotificationPreferences: () =>
@@ -95,8 +94,7 @@ export const settingsApi = {
     api.put<ApiResponse<NotificationPreferences>>('/settings/notifications', data),
 
   // Team Management
-  getTeam: () =>
-    api.get<ApiResponse<TeamMember[]>>('/settings/team'),
+  getTeam: () => api.get<ApiResponse<TeamMember[]>>('/settings/team'),
 
   inviteTeamMember: (data: { email: string; role: string }) =>
     api.post<ApiResponse<{ invited_at: string; status: string }>>('/settings/team/invite', data),

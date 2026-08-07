@@ -45,13 +45,13 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             isLoading: false,
           });
-        } catch (error) {
-          const err = error as { response?: { data?: { message?: string } } };
+        } catch (err) {
+          const error = err as { response?: { data?: { message?: string } } };
           set({
-            error: err.response?.data?.message || 'Login failed',
+            error: error.response?.data?.message || 'Login failed',
             isLoading: false,
           });
-          throw error;
+          throw err;
         }
       },
 
@@ -67,22 +67,22 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             isLoading: false,
           });
-        } catch (error) {
-          const err = error as { response?: { data?: { message?: string } } };
+        } catch (err) {
+          const error = err as { response?: { data?: { message?: string } } };
           set({
-            error: err.response?.data?.message || 'Registration failed',
+            error: error.response?.data?.message || 'Registration failed',
             isLoading: false,
           });
-          throw error;
+          throw err;
         }
       },
 
       logout: async () => {
         try {
           await authApi.logout();
-        } catch (error) {
-          console.error('Logout error:', error);
-        } finally {
+        }catch (error) {
+  console.error('Logout error:', error);
+} finally {
           localStorage.removeItem('token');
           set({ user: null, token: null, isAuthenticated: false });
         }
@@ -101,7 +101,7 @@ export const useAuthStore = create<AuthState>()(
             user: response.data,
             isAuthenticated: true,
           });
-        } catch (error) {
+        } catch {
           localStorage.removeItem('token');
           set({ user: null, isAuthenticated: false });
         }

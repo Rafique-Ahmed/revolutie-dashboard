@@ -9,18 +9,13 @@ export const notificationApi = {
   getLatest: (limit: number = 5) =>
     api.get<ApiResponse<Notification[]>>(`/notifications/latest?limit=${limit}`),
 
-  getUnreadCount: () =>
-    api.get<ApiResponse<{ count: number }>>('/notifications/unread/count'),
+  getUnreadCount: () => api.get<ApiResponse<{ count: number }>>('/notifications/unread/count'),
 
-  markAsRead: (id: number) =>
-    api.put<ApiResponse<Notification>>(`/notifications/${id}/read`),
+  markAsRead: (id: number) => api.put<ApiResponse<Notification>>(`/notifications/${id}/read`),
 
-  markAllAsRead: () =>
-    api.put<ApiResponse<{ count: number }>>('/notifications/read-all'),
+  markAllAsRead: () => api.put<ApiResponse<{ count: number }>>('/notifications/read-all'),
 
-  delete: (id: number) =>
-    api.delete<ApiResponse<null>>(`/notifications/${id}`),
+  delete: (id: number) => api.delete<ApiResponse<null>>(`/notifications/${id}`),
 
-  clearAll: () =>
-    api.delete<ApiResponse<{ count: number }>>('/notifications/clear'),
+  clearAll: () => api.delete<ApiResponse<{ count: number }>>('/notifications/clear'),
 };
