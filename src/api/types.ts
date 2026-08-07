@@ -1,5 +1,7 @@
 // src/api/types.ts
-export interface ApiResponse<T = any> {
+
+// Use unknown instead of any for generic responses
+export interface ApiResponse<T = unknown> {
   success: boolean;
   message?: string;
   data: T;
@@ -92,19 +94,12 @@ export interface Notification {
   created_at: string;
 }
 
-// src/api/types.ts
-// Update the AuthResponse type
-
-export interface AuthResponse {
-  user: User;
-  token: string;
-  token_type: string;
-}
-
-// Also update the ApiResponse to be more flexible
-export interface ApiResponse<T = any> {
-  success: boolean;
-  message?: string;
-  data: T;
-  errors?: Record<string, string[]>;
+export interface TeamMember {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: 'active' | 'pending';
+  avatar?: string;
+  joined_at: string;
 }

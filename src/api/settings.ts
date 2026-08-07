@@ -1,6 +1,6 @@
 // src/api/settings.ts
 import api from './client';
-import type { ApiResponse } from './types';
+import type { ApiResponse, TeamMember } from './types';
 
 export interface GeneralSettings {
   company_name: string;
@@ -96,10 +96,10 @@ export const settingsApi = {
 
   // Team Management
   getTeam: () =>
-    api.get<ApiResponse<any[]>>('/settings/team'),
+    api.get<ApiResponse<TeamMember[]>>('/settings/team'),
 
   inviteTeamMember: (data: { email: string; role: string }) =>
-    api.post<ApiResponse<any>>('/settings/team/invite', data),
+    api.post<ApiResponse<{ invited_at: string; status: string }>>('/settings/team/invite', data),
 
   removeTeamMember: (memberId: number) =>
     api.delete<ApiResponse<null>>(`/settings/team/${memberId}`),

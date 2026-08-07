@@ -3,7 +3,7 @@ import api from './client';
 import type { ApiResponse, PaginatedResponse, Notification } from './types';
 
 export const notificationApi = {
-  getAll: (params?: Record<string, any>) =>
+  getAll: (params?: Record<string, string | number>) =>
     api.get<PaginatedResponse<Notification>>('/notifications', { params }),
 
   getLatest: (limit: number = 5) =>

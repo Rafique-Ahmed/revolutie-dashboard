@@ -24,18 +24,18 @@ export const useNotificationStore = create<NotificationState>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await notificationApi.getAll();
-      // Fix: Handle the nested data structure
       const notifications = response.data.data || [];
       const unreadCount = notifications.filter((n: Notification) => !n.is_read).length;
-      set({ 
-        notifications, 
+      set({
+        notifications,
         unreadCount,
-        isLoading: false 
+        isLoading: false,
       });
-    } catch (error: any) {
-      set({ 
-        error: error.response?.data?.message || 'Failed to fetch notifications', 
-        isLoading: false 
+    } catch (error) {
+      const err = error as { response?: { data?: { message?: string } } };
+      set({
+        error: err.response?.data?.message || 'Failed to fetch notifications',
+        isLoading: false,
       });
     }
   },

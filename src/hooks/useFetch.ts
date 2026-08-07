@@ -1,15 +1,15 @@
 // src/hooks/useFetch.ts
 import { useState, useEffect } from 'react';
 
-interface UseFetchOptions {
+interface UseFetchOptions<T> {
   immediate?: boolean;
-  onSuccess?: (data: any) => void;
-  onError?: (error: any) => void;
+  onSuccess?: (data: T) => void;
+  onError?: (error: Error) => void;
 }
 
 export const useFetch = <T>(
   fetchFn: () => Promise<T>,
-  options: UseFetchOptions = { immediate: true }
+  options: UseFetchOptions<T> = { immediate: true }
 ) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
@@ -22,10 +22,11 @@ export const useFetch = <T>(
       const result = await fetchFn();
       setData(result);
       options.onSuccess?.(result);
-    } catch (err: any) {
-      const message = err.response?.data?.message || err.message || 'Something went wrong';
+    } catch (err) {
+      const error = err as { response?: { data?: { message?: string } }; message?: string };
+      const message = error.response?.data?.message || error.message || 'Something went wrong';
       setError(message);
-      options.onError?.(err);
+      options.onError?.(error as Error);
     } finally {
       setLoading(false);
     }

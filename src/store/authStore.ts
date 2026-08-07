@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { authApi } from '../api/auth';
-import type { User, AuthResponse } from '../api/types';
+import type { User } from '../api/types';
 
 interface AuthState {
   user: User | null;
@@ -11,10 +11,17 @@ interface AuthState {
   isLoading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (data: any) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   clearError: () => void;
+}
+
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -30,19 +37,19 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null });
         try {
           const response = await authApi.login({ email, password });
-          // Fix: AuthResponse is the whole response, not nested
           const { user, token } = response.data;
           localStorage.setItem('token', token);
-          set({ 
-            user, 
-            token, 
-            isAuthenticated: true, 
-            isLoading: false 
+          set({
+            user,
+            token,
+            isAuthenticated: true,
+            isLoading: false,
           });
-        } catch (error: any) {
-          set({ 
-            error: error.response?.data?.message || 'Login failed', 
-            isLoading: false 
+        } catch (error) {
+          const err = error as { response?: { data?: { message?: string } } };
+          set({
+            error: err.response?.data?.message || 'Login failed',
+            isLoading: false,
           });
           throw error;
         }
@@ -54,16 +61,17 @@ export const useAuthStore = create<AuthState>()(
           const response = await authApi.register(data);
           const { user, token } = response.data;
           localStorage.setItem('token', token);
-          set({ 
-            user, 
-            token, 
-            isAuthenticated: true, 
-            isLoading: false 
+          set({
+            user,
+            token,
+            isAuthenticated: true,
+            isLoading: false,
           });
-        } catch (error: any) {
-          set({ 
-            error: error.response?.data?.message || 'Registration failed', 
-            isLoading: false 
+        } catch (error) {
+          const err = error as { response?: { data?: { message?: string } } };
+          set({
+            error: err.response?.data?.message || 'Registration failed',
+            isLoading: false,
           });
           throw error;
         }
@@ -89,9 +97,9 @@ export const useAuthStore = create<AuthState>()(
 
         try {
           const response = await authApi.getUser();
-          set({ 
-            user: response.data, 
-            isAuthenticated: true 
+          set({
+            user: response.data,
+            isAuthenticated: true,
           });
         } catch (error) {
           localStorage.removeItem('token');

@@ -34,14 +34,7 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    'react',
-    'react-hooks',
-    '@typescript-eslint',
-    'import',
-    'jsx-a11y',
-    'prettier',
-  ],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'import', 'jsx-a11y', 'prettier'],
   rules: {
     // Prettier
     'prettier/prettier': 'error',
@@ -62,10 +55,7 @@ module.exports = {
     // TypeScript
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-    '@typescript-eslint/consistent-type-imports': [
-      'error',
-      { prefer: 'type-imports' },
-    ],
+    '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
     '@typescript-eslint/no-non-null-assertion': 'warn',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
 
@@ -73,14 +63,7 @@ module.exports = {
     'import/order': [
       'warn',
       {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          'parent',
-          'sibling',
-          'index',
-        ],
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
         'newlines-between': 'always',
         alphabetize: {
           order: 'asc',
@@ -94,7 +77,7 @@ module.exports = {
     // General
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-debugger': 'error',
-    'curly': ['error', 'all'],
-    'eqeqeq': ['error', 'always'],
+    curly: ['error', 'all'],
+    eqeqeq: ['error', 'always'],
   },
 };

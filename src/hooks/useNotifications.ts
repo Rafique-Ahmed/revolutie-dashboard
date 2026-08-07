@@ -3,15 +3,15 @@ import { useEffect } from 'react';
 import { useNotificationStore } from '../store/notificationStore';
 
 export const useNotifications = () => {
-  const { 
-    notifications, 
-    unreadCount, 
+  const {
+    notifications,
+    unreadCount,
     isLoading,
     error,
-    fetchNotifications, 
-    markAsRead, 
+    fetchNotifications,
+    markAsRead,
     markAllAsRead,
-    clearAll 
+    clearAll,
   } = useNotificationStore();
 
   useEffect(() => {
