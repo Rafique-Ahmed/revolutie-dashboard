@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+coverage/
+*.log
+.env
+.env.*
+.DS_Store
+*.min.js
+*.min.css
+*.config.js
+*.config.ts

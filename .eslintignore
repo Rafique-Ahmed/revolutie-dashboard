@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+coverage/
+*.min.js
+*.min.css
+.oxlintrc.json
+vite.config.ts
+postcss.config.js
+tailwind.config.js
