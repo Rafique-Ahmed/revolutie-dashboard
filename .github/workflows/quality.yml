@@ -2,9 +2,9 @@ name: Code Quality
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   quality:
@@ -19,19 +19,19 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Dependencies
+      - name: 📦 Install Dependencies
         run: |
           rm -rf node_modules package-lock.json
-          npm install --include=optional
+          npm install --force --include=optional
 
-      - name: Type Check
+      - name: 📝 Type Check
         run: npm run type-check
 
-      - name: Lint
+      - name: 🧹 Lint
         run: npm run lint:check
 
-      - name: Format Check
+      - name: ✨ Format Check
         run: npm run format:check
 
-      - name: Build
+      - name: 🏗️ Build
         run: npm run build
