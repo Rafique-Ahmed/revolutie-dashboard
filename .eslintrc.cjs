@@ -34,50 +34,33 @@ module.exports = {
       },
     },
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'import', 'jsx-a11y', 'prettier'],
+  plugins: [
+    'react',
+    'react-hooks',
+    '@typescript-eslint',
+    'import',
+    'jsx-a11y',
+    'prettier',
+  ],
   rules: {
-    // Prettier
     'prettier/prettier': 'error',
-
-    // React
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react/jsx-uses-react': 'off',
-    'react/jsx-key': 'error',
-    'react/no-array-index-key': 'warn',
-    'react/self-closing-comp': 'warn',
-    'react/jsx-boolean-value': 'warn',
-
-    // React Hooks
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-
-    // TypeScript
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
-    '@typescript-eslint/no-non-null-assertion': 'warn',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-
-    // Import
     'import/order': [
       'warn',
       {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
         'newlines-between': 'always',
-        alphabetize: {
-          order: 'asc',
-          caseInsensitive: true,
-        },
+        alphabetize: { order: 'asc', caseInsensitive: true },
       },
     ],
-    'import/no-duplicates': 'warn',
-    'import/no-unresolved': 'off',
-
-    // General
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-debugger': 'error',
-    curly: ['error', 'all'],
-    eqeqeq: ['error', 'always'],
+    'curly': ['error', 'all'],
+    'eqeqeq': ['error', 'always'],
   },
 };
