@@ -1,9 +1,12 @@
 // src/pages/NotFound/NotFound.tsx
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { NotFoundProps } from './NotFound.types';
 import { BackgroundShapes } from './components/BackgroundShapes';
 import { Illustration } from './components/Illustration';
+import { Button } from '../../components/ui/Button';
+import { pageVariants, staggerContainer, fadeInUp } from '../../lib/utils';
 
 export const NotFound: React.FC<NotFoundProps> = ({
   title = "Looks like you've got lost….",
@@ -22,39 +25,63 @@ export const NotFound: React.FC<NotFoundProps> = ({
   };
 
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden">
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="relative min-h-screen bg-white overflow-hidden"
+    >
       {/* Background Shapes */}
       <BackgroundShapes />
 
       {/* Main Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
-        <div className="w-full max-w-[630px]">
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+          className="w-full max-w-[630px]"
+        >
           {/* Card */}
-          <div className="relative bg-white rounded-3xl border border-[#B9B9B9] shadow-lg p-8">
+          <motion.div
+            variants={fadeInUp}
+            className="relative bg-white rounded-3xl border border-[#B9B9B9] shadow-lg p-8"
+          >
             {/* Illustration */}
             <div className="flex justify-center mb-8">
               <Illustration />
             </div>
 
             {/* Text Content */}
-            <div className="text-center">
-              <h1 className="text-[32px] font-bold text-[#202224] tracking-[-0.0036em] mb-2">
+            <motion.div variants={fadeInUp} className="text-center">
+              <motion.h1
+                variants={fadeInUp}
+                className="text-[32px] font-bold text-[#202224] tracking-[-0.0036em] mb-2"
+              >
                 {title}
-              </h1>
-              <p className="text-[#6B7280] text-lg mb-8">{message}</p>
+              </motion.h1>
+              <motion.p variants={fadeInUp} className="text-[#6B7280] text-lg mb-8">
+                {message}
+              </motion.p>
 
               {/* Button */}
-              <button
-                onClick={handleClick}
-                className="w-full max-w-[418px] mx-auto bg-[#4880FF] hover:bg-[#3770E6] text-white font-bold text-xl py-4 px-6 rounded-lg transition-colors duration-200"
-              >
-                {buttonText}
-              </button>
-            </div>
-          </div>
-        </div>
+              <motion.div variants={fadeInUp}>
+                <Button
+                  onClick={handleClick}
+                  variant="primary"
+                  size="xl"
+                  fullWidth
+                  className="max-w-[418px] mx-auto"
+                >
+                  {buttonText}
+                </Button>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
