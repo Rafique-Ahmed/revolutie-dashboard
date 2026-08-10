@@ -16,10 +16,30 @@ export const Analytics: React.FC = () => {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {[
-          { label: 'Total Revenue', value: '$124,592', change: '+12.5%', icon: <DollarSign className="w-6 h-6" /> },
-          { label: 'Total Users', value: '45,689', change: '+8.2%', icon: <Users className="w-6 h-6" /> },
-          { label: 'Conversion Rate', value: '24.8%', change: '+2.1%', icon: <TrendingUp className="w-6 h-6" /> },
-          { label: 'Active Sessions', value: '1,203', change: '-4.3%', icon: <Activity className="w-6 h-6" /> },
+          {
+            label: 'Total Revenue',
+            value: '$124,592',
+            change: '+12.5%',
+            icon: <DollarSign className="w-6 h-6" />,
+          },
+          {
+            label: 'Total Users',
+            value: '45,689',
+            change: '+8.2%',
+            icon: <Users className="w-6 h-6" />,
+          },
+          {
+            label: 'Conversion Rate',
+            value: '24.8%',
+            change: '+2.1%',
+            icon: <TrendingUp className="w-6 h-6" />,
+          },
+          {
+            label: 'Active Sessions',
+            value: '1,203',
+            change: '-4.3%',
+            icon: <Activity className="w-6 h-6" />,
+          },
         ].map((kpi, index) => (
           <div key={index} className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between">
@@ -31,7 +51,9 @@ export const Analytics: React.FC = () => {
                 {kpi.icon}
               </div>
             </div>
-            <p className={`text-sm mt-4 ${kpi.change.startsWith('+') ? 'text-green-500' : 'text-red-500'}`}>
+            <p
+              className={`text-sm mt-4 ${kpi.change.startsWith('+') ? 'text-green-500' : 'text-red-500'}`}
+            >
               {kpi.change} vs last month
             </p>
           </div>
