@@ -22,3 +22,32 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+/* Toast Styles */
+.toast-success {
+  background: #10b981 !important;
+  color: white !important;
+}
+
+.toast-error {
+  background: #ef4444 !important;
+  color: white !important;
+}
+
+.toast-info {
+  background: #3b82f6 !important;
+  color: white !important;
+}
+
+/* Dark mode support */
+.dark .toast-success {
+  background: #059669 !important;
+}
+
+.dark .toast-error {
+  background: #dc2626 !important;
+}
+
+.dark .toast-info {
+  background: #2563eb !important;
+}

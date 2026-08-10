@@ -18,13 +18,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-[#F5F6FA]">
       <Sidebar isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
-      <div className={`transition-all duration-300 ease-in-out ${
-        isSidebarCollapsed ? 'ml-[72px]' : 'ml-[247px]'
-      }`}>
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          isSidebarCollapsed ? 'ml-[72px]' : 'ml-[247px]'
+        }`}
+      >
         <Header />
-        <main className="p-6">
-          {children || <Outlet />}
-        </main>
+        <main className="p-6">{children || <Outlet />}</main>
       </div>
     </div>
   );

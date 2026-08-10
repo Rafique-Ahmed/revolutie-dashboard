@@ -1,8 +1,8 @@
 // src/store/authStore.ts
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { authApi } from '../api/auth';
-import type { User } from '../api/types';
+import toast from 'react-hot-toast';
+import { authApi, User } from '../api/auth';
 
 interface AuthState {
   user: User | null;
@@ -10,18 +10,30 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: RegisterData) => Promise<void>;
+
+  login: (
+    email: string,
+    password: string,
+    remember?: boolean
+  ) => Promise<{ success: boolean; message?: string }>;
+  register: (data: {
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+  }) => Promise<{ success: boolean; message?: string }>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   clearError: () => void;
 }
 
-interface RegisterData {
-  name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+  message?: string;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -33,25 +45,37 @@ export const useAuthStore = create<AuthState>()(
       isLoading: false,
       error: null,
 
-      login: async (email, password) => {
+      login: async (email, password, remember = false) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await authApi.login({ email, password });
-          const { user, token } = response.data;
+          const response = await authApi.login({ email, password, remember });
+          const { user, token } = response.data.data;
+
           localStorage.setItem('token', token);
+
           set({
             user,
             token,
             isAuthenticated: true,
             isLoading: false,
+            error: null,
           });
+
+          toast.success('Welcome back! Redirecting to dashboard...');
+
+          return { success: true };
         } catch (err) {
-          const error = err as { response?: { data?: { message?: string } } };
+          const error = err as ApiError;
+          const errorMessage = error.response?.data?.message || 'Login failed. Please try again.';
+
           set({
-            error: error.response?.data?.message || 'Login failed',
+            error: errorMessage,
             isLoading: false,
+            isAuthenticated: false,
           });
-          throw err;
+
+          toast.error(errorMessage);
+          return { success: false, message: errorMessage };
         }
       },
 
@@ -59,51 +83,77 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null });
         try {
           const response = await authApi.register(data);
-          const { user, token } = response.data;
+          const { user, token } = response.data.data;
+
           localStorage.setItem('token', token);
+
           set({
             user,
             token,
             isAuthenticated: true,
             isLoading: false,
+            error: null,
           });
+
+          toast.success('Registration successful! Redirecting to dashboard...');
+          return { success: true };
         } catch (err) {
-          const error = err as { response?: { data?: { message?: string } } };
+          const error = err as ApiError;
+          const errorMessage =
+            error.response?.data?.message || 'Registration failed. Please try again.';
+
           set({
-            error: error.response?.data?.message || 'Registration failed',
+            error: errorMessage,
             isLoading: false,
+            isAuthenticated: false,
           });
-          throw err;
+
+          toast.error(errorMessage);
+          return { success: false, message: errorMessage };
         }
       },
 
       logout: async () => {
         try {
           await authApi.logout();
-        } catch (error) {
-          console.error('Logout error:', error);
+          toast.success('Logged out successfully');
+        } catch {
+          console.warn('Logout error');
         } finally {
           localStorage.removeItem('token');
-          set({ user: null, token: null, isAuthenticated: false });
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+            isLoading: false,
+          });
         }
       },
 
       checkAuth: async () => {
         const token = localStorage.getItem('token');
         if (!token) {
-          set({ isAuthenticated: false });
+          set({ isAuthenticated: false, isLoading: false });
           return;
         }
 
+        set({ isLoading: true });
         try {
           const response = await authApi.getUser();
+          const user = response.data.data;
+
           set({
-            user: response.data,
+            user,
             isAuthenticated: true,
+            isLoading: false,
           });
         } catch {
           localStorage.removeItem('token');
-          set({ user: null, isAuthenticated: false });
+          set({
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+          });
         }
       },
 

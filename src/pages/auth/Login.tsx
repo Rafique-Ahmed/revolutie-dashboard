@@ -1,26 +1,93 @@
 // src/pages/auth/Login.tsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import toast from 'react-hot-toast';
 import { Logo } from '../../components/ui/Logo';
 import { Divider } from '../../components/ui/Divider';
 import LoginForm from './components/LoginForm';
 import { SocialLogin } from './components/SocialLogin';
 import { LoginIllustration } from './components/LoginIllustration';
-import { LoginFormData } from './LoginTypes';
+import { useAuthStore } from '../../store/authStore';
 import { pageVariants, fadeInUp, staggerContainer } from '../../lib/utils';
+
+const loginSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  remember: z.boolean().optional(),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { login, isLoading, error, clearError, isAuthenticated } = useAuthStore();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
-  const handleLogin = async (data: LoginFormData) => {
-    console.warn('Login data:', data);
-    navigate('/dashboard');
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      remember: false,
+    },
+  });
+
+  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+    clearError();
+    console.warn('🔐 Login attempt:', { email: data.email, remember: data.remember });
+
+    try {
+      const result = await login(data.email, data.password, data.remember);
+      console.warn('✅ Login result:', result);
+
+      if (result.success) {
+        setIsRedirecting(true);
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('❌ Login error:', error);
+    }
   };
 
   const handleGoogleLogin = async () => {
-    console.warn('Google login clicked');
+    toast('Google login coming soon!', {
+      icon: '🔜',
+      duration: 3000,
+      style: {
+        background: '#3B82F6',
+        color: '#fff',
+        padding: '16px',
+        borderRadius: '8px',
+      },
+    });
   };
+
+  if (isRedirecting) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Redirecting to dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -53,11 +120,17 @@ const Login: React.FC = () => {
             </p>
           </motion.div>
 
-          <LoginForm onSubmit={handleLogin} />
+          <LoginForm
+            onSubmit={handleSubmit(onSubmit)}
+            register={register}
+            errors={errors}
+            isLoading={isLoading}
+            error={error}
+          />
 
           <Divider text="or" />
 
-          <SocialLogin onGoogleLogin={handleGoogleLogin} />
+          <SocialLogin onGoogleLogin={handleGoogleLogin} isLoading={isLoading} />
 
           <motion.p
             variants={fadeInUp}

@@ -30,9 +30,7 @@ export const RouteBuilder = () => {
   return (
     <AnimatePresence mode="wait">
       <AnimatedLayout key={location.pathname}>
-        <Routes location={location}>
-          {renderRoutes(allRoutes)}
-        </Routes>
+        <Routes location={location}>{renderRoutes(allRoutes)}</Routes>
       </AnimatedLayout>
     </AnimatePresence>
   );
