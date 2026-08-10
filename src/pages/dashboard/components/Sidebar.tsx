@@ -134,12 +134,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
 
             return (
               <div key={item.label} className="mb-0.5">
-                {/* Main Item */}
                 {item.path && !hasSubItems ? (
                   <NavLink
                     to={item.path}
                     className={({ isActive }) =>
-                      `flex items-center w-full h-12 rounded-md transition-colors ${
+                      `flex items-center h-12 rounded-md transition-colors ${
                         isActive ? 'bg-[#4880FF] text-white' : 'text-[#202224] hover:bg-gray-100'
                       } ${isCollapsed ? 'justify-center mx-2' : 'px-4 mx-3'}`
                     }
@@ -180,7 +179,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
                       )}
                     </button>
 
-                    {/* Sub-items - Aligned with parent */}
                     {hasSubItems && isExpandedItem && (
                       <div
                         className={`${
@@ -216,7 +214,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
         </nav>
       </div>
 
-      {/* Logout */}
       <div className={`flex-shrink-0 border-t border-gray-100 bg-white p-2`}>
         <button
           className={`flex items-center h-12 rounded-md text-[#202224] hover:bg-gray-100 transition-colors ${
@@ -231,7 +228,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
         </button>
       </div>
 
-      {/* Toggle Button */}
       <button
         onClick={onToggle}
         className="absolute -right-3 top-20 w-6 h-6 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition-all duration-300 z-10"

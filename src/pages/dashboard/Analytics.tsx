@@ -1,83 +1,69 @@
 // src/pages/dashboard/Analytics.tsx
 import React from 'react';
-import { DashboardLayout } from './components/DashboardLayout';
-import { BarChart, LineChart, TrendingUp, Users, DollarSign, Activity } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
+import { useAnalytics } from '../../hooks/useAnalytics';
+import { RevenueChart } from '../../components/analytics/RevenueChart';
+import { CustomersCard } from '../../components/analytics/CustomersCard';
+import { FeaturedProductCard } from '../../components/analytics/FeaturedProductCard';
+import { SalesAnalyticsCard } from '../../components/analytics/SalesAnalyticsCard';
 
-export const Analytics: React.FC = () => {
+const Analytics: React.FC = () => {
+  const { data, loading, error } = useAnalytics();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-red-500">{error}</div>
+      </div>
+    );
+  }
+
   return (
-    <DashboardLayout>
-      <div className="mb-6">
-        <h1 className="text-[32px] font-bold text-[#202224] mb-2 tracking-[-0.0036em]">
-          Analytics
-        </h1>
-        <p className="text-gray-500">View detailed analytics and insights</p>
-      </div>
+    <div>
+      <h1 className="text-[32px] font-bold text-[#202224] mb-6 tracking-[-0.0036em]">Dashboard</h1>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        {[
-          {
-            label: 'Total Revenue',
-            value: '$124,592',
-            change: '+12.5%',
-            icon: <DollarSign className="w-6 h-6" />,
-          },
-          {
-            label: 'Total Users',
-            value: '45,689',
-            change: '+8.2%',
-            icon: <Users className="w-6 h-6" />,
-          },
-          {
-            label: 'Conversion Rate',
-            value: '24.8%',
-            change: '+2.1%',
-            icon: <TrendingUp className="w-6 h-6" />,
-          },
-          {
-            label: 'Active Sessions',
-            value: '1,203',
-            change: '-4.3%',
-            icon: <Activity className="w-6 h-6" />,
-          },
-        ].map((kpi, index) => (
-          <div key={index} className="bg-white rounded-xl shadow-sm p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500">{kpi.label}</p>
-                <p className="text-2xl font-bold mt-1">{kpi.value}</p>
-              </div>
-              <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
-                {kpi.icon}
-              </div>
-            </div>
-            <p
-              className={`text-sm mt-4 ${kpi.change.startsWith('+') ? 'text-green-500' : 'text-red-500'}`}
-            >
-              {kpi.change} vs last month
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold mb-4">Revenue Overview</h3>
-          <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-            <LineChart className="w-12 h-12 text-gray-400" />
-            <span className="ml-2 text-gray-400">Chart placeholder</span>
+      {/* Revenue Chart */}
+      <div className="bg-white rounded-[14px] shadow-[6px_6px_54px_rgba(0,0,0,0.05)] p-6 mb-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-[#202224] font-nunitoSans text-2xl font-bold">Revenue</h3>
+          <div className="flex items-center gap-2 px-3 py-1.5 border border-[#D5D5D5] rounded">
+            <span className="text-xs font-semibold text-[#2B3034]/40">October</span>
+            <ChevronDown className="w-4 h-4 text-[#2B3034]/40" />
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold mb-4">User Growth</h3>
-          <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-            <BarChart className="w-12 h-12 text-gray-400" />
-            <span className="ml-2 text-gray-400">Chart placeholder</span>
+        <RevenueChart data={data.revenue} />
+        <div className="flex justify-center gap-8 mt-4">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-[#F9978A]" />
+            <span className="text-[#282D32] font-bold">Sales</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-[#E3B9FF]" />
+            <span className="text-[#282D32] font-bold">Profit</span>
           </div>
         </div>
       </div>
-    </DashboardLayout>
+
+      {/* 3 Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <CustomersCard
+          newCustomers={data.customers.newCustomers}
+          repeatedCustomers={data.customers.repeatedCustomers}
+        />
+
+        <FeaturedProductCard name={data.featuredProduct.name} price={data.featuredProduct.price} />
+
+        <SalesAnalyticsCard data={data.salesAnalytics} />
+      </div>
+    </div>
   );
 };
 
