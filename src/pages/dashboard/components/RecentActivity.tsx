@@ -23,7 +23,7 @@ const mockActivities = [
     piece: 423,
     amount: 34295,
     status: 'pending' as const,
-    avatar: '/Bitmap(1).png',
+    avatar: '/Bitmap.png',
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const mockActivities = [
     piece: 423,
     amount: 34295,
     status: 'rejected' as const,
-    avatar: '/Bitmap(2).png',
+    avatar: '/Bitmap.png',
   },
 ];
 

@@ -7,6 +7,7 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import Dashboard from './pages/dashboard/Dashboard';
+import Analytics from './pages/dashboard/Analytics';
 import NotFound from './pages/NotFound/NotFound';
 import { AnimatedLayout } from './components/layout/AnimatedLayout';
 
@@ -24,6 +25,7 @@ const AnimatedRoutes = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/analytics" element={<Analytics />} />
           <Route path="/404" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>

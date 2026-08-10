@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
       <div className="flex items-center gap-6">
         {/* Language */}
         <div className="flex items-center gap-2">
-          <img src="/UkFlag.png" alt="UK" className="w-10 h-[27px] rounded" />
+          <img src="/ukflag.png" alt="UK" className="w-10 h-[27px] rounded" />
           <span className="text-sm font-semibold text-[#646464]">English</span>
           <ChevronDown className="w-4 h-4 text-[#646464]" />
         </div>
@@ -49,3 +49,5 @@ export const Header: React.FC = () => {
     </header>
   );
 };
+
+export default Header;
