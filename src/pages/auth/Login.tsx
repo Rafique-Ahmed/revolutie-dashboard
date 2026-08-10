@@ -1,48 +1,25 @@
-// src/pages/Login/Login.tsx
+// src/pages/auth/Login.tsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Logo } from '../../components/ui/Logo';
 import { Divider } from '../../components/ui/Divider';
-import { LoginForm } from './components/LoginForm';
+import LoginForm from './components/LoginForm';
 import { SocialLogin } from './components/SocialLogin';
 import { LoginIllustration } from './components/LoginIllustration';
-import { LoginFormData, LoginProps } from './Login.types';
+import { LoginFormData } from './LoginTypes';
 import { pageVariants, fadeInUp, staggerContainer } from '../../lib/utils';
 
-export const Login: React.FC<LoginProps> = ({
-  onLogin,
-  onGoogleLogin,
-  onRegister,
-  onForgotPassword: _onForgotPassword,
-  isLoading = false,
-  error = null,
-}) => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleLogin = async (data: LoginFormData): Promise<void> => {
-    if (onLogin) {
-      await onLogin(data);
-    } else {
-      console.warn('Login data:', data);
-      navigate('/dashboard');
-    }
+  const handleLogin = async (data: LoginFormData) => {
+    console.warn('Login data:', data);
+    navigate('/dashboard');
   };
 
   const handleGoogleLogin = async () => {
-    if (onGoogleLogin) {
-      await onGoogleLogin();
-    } else {
-      console.warn('Google login clicked');
-    }
-  };
-
-  const handleRegister = () => {
-    if (onRegister) {
-      onRegister();
-    } else {
-      navigate('/register');
-    }
+    console.warn('Google login clicked');
   };
 
   return (
@@ -53,7 +30,6 @@ export const Login: React.FC<LoginProps> = ({
       exit="exit"
       className="flex items-start rounded-[32px] bg-white min-h-screen overflow-hidden"
     >
-      {/* Left Column - Login Form */}
       <div className="flex p-8 flex-col items-start w-full lg:w-1/2 h-full">
         <div className="flex flex-col items-start gap-2.5 w-full">
           <Logo />
@@ -65,7 +41,6 @@ export const Login: React.FC<LoginProps> = ({
           animate="animate"
           className="flex py-0 px-0 lg:px-16 flex-col justify-center items-start gap-8 w-full h-full mt-8"
         >
-          {/* Header */}
           <motion.div
             variants={fadeInUp}
             className="flex flex-col justify-center items-start gap-3 w-full"
@@ -78,27 +53,22 @@ export const Login: React.FC<LoginProps> = ({
             </p>
           </motion.div>
 
-          {/* Login Form */}
-          <LoginForm onSubmit={handleLogin} isLoading={isLoading} error={error} />
+          <LoginForm onSubmit={handleLogin} />
 
-          {/* Divider */}
           <Divider text="or" />
 
-          {/* Social Login */}
-          <SocialLogin onGoogleLogin={handleGoogleLogin} isLoading={isLoading} />
+          <SocialLogin onGoogleLogin={handleGoogleLogin} />
 
-          {/* Register Link */}
           <motion.p
             variants={fadeInUp}
             className="text-[#367AFF] font-inter text-lg font-semibold w-full text-center cursor-pointer hover:text-[#2868E6] transition-colors"
-            onClick={handleRegister}
+            onClick={() => navigate('/register')}
           >
             Need an account? Create one
           </motion.p>
         </motion.div>
       </div>
 
-      {/* Right Column - Illustration */}
       <LoginIllustration />
     </motion.div>
   );

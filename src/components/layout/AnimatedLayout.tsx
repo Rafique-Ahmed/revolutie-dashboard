@@ -1,27 +1,21 @@
 // src/components/layout/AnimatedLayout.tsx
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
-import { pageVariants } from '../../lib/utils';
+import { motion } from 'framer-motion';
 
 interface AnimatedLayoutProps {
   children: React.ReactNode;
 }
 
 export const AnimatedLayout: React.FC<AnimatedLayoutProps> = ({ children }) => {
-  const location = useLocation();
-
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={location.pathname}
-        variants={pageVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+      className="min-h-screen"
+    >
+      {children}
+    </motion.div>
   );
 };

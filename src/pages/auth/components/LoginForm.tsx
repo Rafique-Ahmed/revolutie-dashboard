@@ -1,6 +1,7 @@
-// src/pages/Login/components/LoginForm.tsx
+// src/pages/auth/components/LoginForm.tsx
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Mail, Lock } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +9,7 @@ import { z } from 'zod';
 import { Input } from '../../../components/ui/Input';
 import { Checkbox } from '../../../components/ui/Checkbox';
 import { Button } from '../../../components/ui/Button';
-import { LoginFormData } from '../Login.types';
+import { LoginFormData } from '../LoginTypes';
 import { fadeInUp, staggerContainer } from '../../../lib/utils';
 
 const loginSchema = z.object({
@@ -23,7 +24,8 @@ interface LoginFormProps {
   error?: string | null;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading = false, error }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading = false, error }) => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -43,7 +45,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading = fals
       initial="initial"
       animate="animate"
       onSubmit={handleSubmit((data) => onSubmit(data as LoginFormData))}
-      className="flex flex-col justify-center items-start gap-5 w-full max-w-[399px]"
+      className="flex flex-col justify-center items-start gap-5 w-full"
     >
       {error && (
         <motion.div
@@ -79,8 +81,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading = fals
         />
       </motion.div>
 
-      <motion.div variants={fadeInUp} className="w-full">
+      <motion.div variants={fadeInUp} className="w-full flex items-center justify-between">
         <Checkbox label="Keep me logged in" {...register('remember')} disabled={isLoading} />
+        <button
+          type="button"
+          onClick={() => navigate('/forgot-password')}
+          className="text-[#367AFF] hover:text-[#2868E6] text-sm font-medium transition-colors"
+        >
+          Forgot password?
+        </button>
       </motion.div>
 
       <motion.div variants={fadeInUp} className="w-full">
@@ -91,3 +100,5 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading = fals
     </motion.form>
   );
 };
+
+export default LoginForm;
