@@ -11,9 +11,9 @@ interface SalesAnalyticsCardProps {
 }
 
 export const SalesAnalyticsCard: React.FC<SalesAnalyticsCardProps> = ({ data }) => {
-  const chartData = data?.labels.map((label, index) => ({
+  const chartData = data?.labels?.map((label, index) => ({
     name: label,
-    value: data?.data[index] || 0,
+    value: data?.data?.[index] || 0,
   })) || [
     { name: 'Jan', value: 30 },
     { name: 'Feb', value: 45 },

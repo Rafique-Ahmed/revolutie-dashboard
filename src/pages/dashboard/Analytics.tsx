@@ -21,7 +21,16 @@ const Analytics: React.FC = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-red-500">{error}</div>
+        <div className="text-red-500 text-center">
+          <p className="font-semibold">Error loading analytics</p>
+          <p className="text-sm mt-1">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }

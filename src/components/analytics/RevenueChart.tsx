@@ -20,10 +20,10 @@ interface RevenueChartProps {
 }
 
 export const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
-  const chartData = data?.labels.map((label, index) => ({
+  const chartData = data?.labels?.map((label, index) => ({
     name: label,
-    sales: data?.sales[index] || 0,
-    profit: data?.profit[index] || 0,
+    sales: data?.sales?.[index] || 0,
+    profit: data?.profit?.[index] || 0,
   })) || [
     { name: '2015', sales: 5000, profit: 2000 },
     { name: '2016', sales: 10000, profit: 4000 },
