@@ -45,7 +45,7 @@ export const UserList: React.FC = () => {
       } else {
         setError('Failed to load users');
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred');
     } finally {
       setLoading(false);
@@ -63,25 +63,33 @@ export const UserList: React.FC = () => {
   return (
     <div className="bg-[#F5F6FA] min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="mb-6">
-          <h1 className="text-[32px] font-bold text-[#202224] tracking-[-0.0036em]">
-            User List
-          </h1>
+          <h1 className="text-[32px] font-bold text-[#202224] tracking-[-0.0036em]">User List</h1>
         </div>
 
-        {/* Table */}
         <div className="bg-white rounded-[14px] border border-[#B9B9B9] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="bg-[#FCFDFD] border-b border-[#D5D5D5]">
-                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">ID</th>
-                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">NAME</th>
-                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">ADDRESS</th>
-                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">DATE</th>
-                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">TYPE</th>
-                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">STATUS</th>
+                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">
+                    ID
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">
+                    NAME
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">
+                    ADDRESS
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">
+                    DATE
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">
+                    TYPE
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-extrabold text-[#202224] opacity-90">
+                    STATUS
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -117,9 +125,7 @@ export const UserList: React.FC = () => {
                           <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600">
                             {user.name.charAt(0)}
                           </div>
-                          <span className="text-sm text-[#202224] opacity-80">
-                            {user.name}
-                          </span>
+                          <span className="text-sm text-[#202224] opacity-80">{user.name}</span>
                         </div>
                       </td>
                       <td className="px-4 py-3 text-sm text-[#202224] opacity-80">
@@ -141,7 +147,6 @@ export const UserList: React.FC = () => {
             </table>
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
               <span className="text-sm text-gray-500">

@@ -8,8 +8,8 @@ export const userService = {
     try {
       const response = await api.get(`/users?page=${page}&per_page=${perPage}`);
       return response.data;
-    } catch (error) {
-      console.warn('API error, using mock data:', error);
+    } catch {
+      console.warn('API error, using mock data:');
       return {
         success: true,
         data: {
@@ -28,22 +28,24 @@ export const userService = {
     try {
       const response = await api.get(`/users/${id}`);
       return response.data;
-    } catch (error) {
-      console.warn('API error, using mock data:', error);
+    } catch {
+      console.warn('API error, using mock data:');
       return {
         success: true,
-        data: getMockUsers().find(u => u.id === id) || getMockUsers()[0],
+        data: getMockUsers().find((u) => u.id === id) || getMockUsers()[0],
       };
     }
   },
 
   // Create user
-  createUser: async (userData: Partial<User>): Promise<{ success: boolean; data: User; message: string }> => {
+  createUser: async (
+    userData: Partial<User>
+  ): Promise<{ success: boolean; data: User; message: string }> => {
     try {
       const response = await api.post('/users', userData);
       return response.data;
-    } catch (error) {
-      console.warn('API error, using mock:', error);
+    } catch {
+      console.warn('API error, using mock:');
       return {
         success: true,
         data: { ...userData, id: Date.now() } as User,
@@ -53,12 +55,15 @@ export const userService = {
   },
 
   // Update user
-  updateUser: async (id: number, userData: Partial<User>): Promise<{ success: boolean; data: User; message: string }> => {
+  updateUser: async (
+    id: number,
+    userData: Partial<User>
+  ): Promise<{ success: boolean; data: User; message: string }> => {
     try {
       const response = await api.put(`/users/${id}`, userData);
       return response.data;
-    } catch (error) {
-      console.warn('API error, using mock:', error);
+    } catch {
+      console.warn('API error, using mock:');
       return {
         success: true,
         data: { ...userData, id } as User,
@@ -72,8 +77,8 @@ export const userService = {
     try {
       const response = await api.delete(`/users/${id}`);
       return response.data;
-    } catch (error) {
-      console.warn('API error, using mock:', error);
+    } catch {
+      console.warn('API error, using mock:');
       return {
         success: true,
         message: 'User deleted successfully',
@@ -82,11 +87,14 @@ export const userService = {
   },
 
   // Get user stats
-  getUserStats: async (): Promise<{ success: boolean; data: any }> => {
+  getUserStats: async (): Promise<{
+    success: boolean;
+    data: { total: number; active: number; pending: number; suspended: number };
+  }> => {
     try {
       const response = await api.get('/users/stats');
       return response.data;
-    } catch (error) {
+    } catch {
       return {
         success: true,
         data: {
