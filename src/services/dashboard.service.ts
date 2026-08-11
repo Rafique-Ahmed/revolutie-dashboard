@@ -1,7 +1,5 @@
 // src/services/dashboard.service.ts
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+import api from '../api/client';
 
 export interface KpiData {
   title: string;
@@ -34,17 +32,17 @@ export interface DashboardData {
   activities: ActivityItem[];
 }
 
-// Mock data
+// Mock data with safe values
 export const getMockKpis = (): KpiData[] => [
   {
-    title: 'Total User',
+    title: 'Total Users',
     value: '40,689',
     change: '8.5% Up',
     changeType: 'up',
     icon: 'Users',
   },
   {
-    title: 'Total Order',
+    title: 'Total Orders',
     value: '10,293',
     change: '1.3% Up',
     changeType: 'up',
@@ -67,8 +65,8 @@ export const getMockKpis = (): KpiData[] => [
 ];
 
 export const getMockChartData = (): ChartData => ({
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-  values: [4000, 3000, 5000, 7000, 6000, 8000],
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  values: [4000, 3000, 5000, 7000, 6000, 8000, 7500, 9000, 8500, 10000, 9500, 11000],
 });
 
 export const getMockActivities = (): ActivityItem[] => [
@@ -114,44 +112,27 @@ export const getMockData = (): DashboardData => ({
 });
 
 export const dashboardService = {
-  // Get dashboard data from API
-  getDashboardData: async (): Promise<DashboardData> => {
+  getDashboardData: async () => {
     try {
-      const response = await axios.get(`${API_URL}/dashboard`);
-      return response.data;
-    } catch {
-      console.warn('API not available, using mock data');
-      return getMockData();
-    }
-  },
-
-  // Get only KPI data
-  getKpis: async (): Promise<KpiData[]> => {
-    try {
-      const response = await axios.get(`${API_URL}/dashboard/stats`);
-      return response.data;
-    } catch {
-      return getMockKpis();
-    }
-  },
-
-  // Get chart data
-  getChartData: async (): Promise<ChartData> => {
-    try {
-      const response = await axios.get(`${API_URL}/dashboard/charts`);
-      return response.data;
-    } catch {
-      return getMockChartData();
-    }
-  },
-
-  // Get recent activity
-  getRecentActivity: async (): Promise<ActivityItem[]> => {
-    try {
-      const response = await axios.get(`${API_URL}/dashboard/activity`);
-      return response.data;
-    } catch {
-      return getMockActivities();
+      const response = await api.get('/dashboard');
+      // Ensure activities array exists
+      if (response.data?.data?.activities) {
+        return response.data;
+      }
+      // If activities is missing, use mock data
+      return {
+        success: true,
+        data: {
+          ...response.data?.data,
+          activities: getMockActivities(),
+        },
+      };
+    } catch (error) {
+      console.warn('API error, using mock data:', error);
+      return {
+        success: true,
+        data: getMockData(),
+      };
     }
   },
 };

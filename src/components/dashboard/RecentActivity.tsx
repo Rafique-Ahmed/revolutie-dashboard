@@ -32,45 +32,46 @@ const statusLabels: Record<StatusType, string> = {
   rejected: 'Rejected',
 };
 
-export const RecentActivity: React.FC<RecentActivityProps> = ({ activities = [] }) => {
-  const activityData =
-    activities.length > 0
-      ? activities
-      : [
-          {
-            id: 1,
-            product: 'Apple Watch',
-            location: '6096 Marjolaine Landing',
-            date: '12.09.2026',
-            time: '12.53 PM',
-            piece: 423,
-            amount: 34295,
-            status: 'delivered' as StatusType,
-            avatar: '/Bitmap.png',
-          },
-          {
-            id: 2,
-            product: 'Apple Watch',
-            location: '6096 Marjolaine Landing',
-            date: '12.09.2026',
-            time: '12.53 PM',
-            piece: 423,
-            amount: 34295,
-            status: 'pending' as StatusType,
-            avatar: '/Bitmap(1).png',
-          },
-          {
-            id: 3,
-            product: 'Apple Watch',
-            location: '6096 Marjolaine Landing',
-            date: '12.09.2026',
-            time: '12.53 PM',
-            piece: 423,
-            amount: 34295,
-            status: 'rejected' as StatusType,
-            avatar: '/Bitmap(2).png',
-          },
-        ];
+// Fallback mock data
+const mockActivities: ActivityItem[] = [
+  {
+    id: 1,
+    product: 'Apple Watch',
+    location: '6096 Marjolaine Landing',
+    date: '12.09.2026',
+    time: '12.53 PM',
+    piece: 423,
+    amount: 34295,
+    status: 'delivered',
+    avatar: '/Bitmap.png',
+  },
+  {
+    id: 2,
+    product: 'Apple Watch',
+    location: '6096 Marjolaine Landing',
+    date: '12.09.2026',
+    time: '12.53 PM',
+    piece: 423,
+    amount: 34295,
+    status: 'pending',
+    avatar: '/Bitmap(1).png',
+  },
+  {
+    id: 3,
+    product: 'Apple Watch',
+    location: '6096 Marjolaine Landing',
+    date: '12.09.2026',
+    time: '12.53 PM',
+    piece: 423,
+    amount: 34295,
+    status: 'rejected',
+    avatar: '/Bitmap(2).png',
+  },
+];
+
+export const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) => {
+  // Use provided activities or fallback to mock data
+  const activityData = activities && activities.length > 0 ? activities : mockActivities;
 
   return (
     <div className="bg-white rounded-[14px] shadow-[6px_6px_54px_rgba(0,0,0,0.05)] p-6">
@@ -104,32 +105,34 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ activities = [] 
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-3">
                     <img
-                      src={activity.avatar}
-                      alt={activity.product}
+                      src={activity.avatar || '/placeholder.png'}
+                      alt={activity.product || 'Product'}
                       className="w-9 h-9 rounded-full object-cover"
                     />
                     <span className="text-sm font-semibold text-[#202224] opacity-80">
-                      {activity.product}
+                      {activity.product || 'Unknown Product'}
                     </span>
                   </div>
                 </td>
                 <td className="py-3 px-4 text-sm font-semibold text-[#202224] opacity-80">
-                  {activity.location}
+                  {activity.location || 'Unknown Location'}
                 </td>
                 <td className="py-3 px-4 text-sm font-semibold text-[#202224] opacity-80">
-                  {activity.date} - {activity.time}
+                  {activity.date || 'N/A'} - {activity.time || 'N/A'}
                 </td>
                 <td className="py-3 px-4 text-sm font-semibold text-[#202224] opacity-80">
-                  {activity.piece}
+                  {activity.piece || 0}
                 </td>
                 <td className="py-3 px-4 text-sm font-semibold text-[#202224] opacity-80">
-                  ${activity.amount.toLocaleString()}
+                  ${(activity.amount || 0).toLocaleString()}
                 </td>
                 <td className="py-3 px-4">
                   <span
-                    className={`px-4 py-1 rounded-full text-white text-sm font-bold ${statusColors[activity.status]}`}
+                    className={`px-4 py-1 rounded-full text-white text-sm font-bold ${
+                      statusColors[activity.status] || 'bg-gray-500'
+                    }`}
                   >
-                    {statusLabels[activity.status]}
+                    {statusLabels[activity.status] || activity.status || 'Unknown'}
                   </span>
                 </td>
               </tr>

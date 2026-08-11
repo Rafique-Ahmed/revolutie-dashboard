@@ -19,10 +19,22 @@ const Dashboard: React.FC = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-red-500">{error}</div>
+        <div className="text-red-500 text-center">
+          <p className="font-semibold">Error loading dashboard</p>
+          <p className="text-sm mt-1">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
+
+  // Map API data to KPI cards
+  const kpis = data?.kpis || [];
 
   return (
     <div>
@@ -30,18 +42,18 @@ const Dashboard: React.FC = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        {data.kpis.map((kpi, index) => (
+        {kpis.map((kpi, index) => (
           <KpiCard key={index} {...kpi} />
         ))}
       </div>
 
       {/* Sales Chart */}
       <div className="mb-6">
-        <SalesChart />
+        <SalesChart data={data?.chartData} />
       </div>
 
       {/* Recent Activity */}
-      <RecentActivity />
+      <RecentActivity activities={data?.activities} />
     </div>
   );
 };

@@ -5,8 +5,8 @@ import { Users, ShoppingBag, DollarSign, Clock, TrendingUp, TrendingDown } from 
 interface KpiCardProps {
   title: string;
   value: string | number;
-  change: string;
-  changeType: 'up' | 'down';
+  change?: string;
+  changeType?: 'up' | 'down';
   icon: string;
   iconBg?: string;
 }
@@ -22,7 +22,7 @@ export const KpiCard: React.FC<KpiCardProps> = ({
   title,
   value,
   change,
-  changeType,
+  changeType = 'up',
   icon,
   iconBg = 'bg-blue-50',
 }) => {
@@ -41,17 +41,19 @@ export const KpiCard: React.FC<KpiCardProps> = ({
           {iconMap[icon]}
         </div>
       </div>
-      <div className="flex items-center gap-2 mt-2">
-        {isUp ? (
-          <TrendingUp className="w-4 h-4 text-[#00B69B]" />
-        ) : (
-          <TrendingDown className="w-4 h-4 text-[#F93C65]" />
-        )}
-        <span className={`text-sm font-semibold ${isUp ? 'text-[#00B69B]' : 'text-[#F93C65]'}`}>
-          {change}
-        </span>
-        <span className="text-[#606060] text-base font-semibold">from yesterday</span>
-      </div>
+      {change && (
+        <div className="flex items-center gap-2 mt-2">
+          {isUp ? (
+            <TrendingUp className="w-4 h-4 text-[#00B69B]" />
+          ) : (
+            <TrendingDown className="w-4 h-4 text-[#F93C65]" />
+          )}
+          <span className={`text-sm font-semibold ${isUp ? 'text-[#00B69B]' : 'text-[#F93C65]'}`}>
+            {change}
+          </span>
+          <span className="text-[#606060] text-base font-semibold">from yesterday</span>
+        </div>
+      )}
     </div>
   );
 };

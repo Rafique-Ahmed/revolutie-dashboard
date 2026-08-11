@@ -13,21 +13,25 @@ import {
 } from 'recharts';
 
 interface SalesChartProps {
-  data?: Array<{ name: string; value: number }>;
+  data?: {
+    labels: string[];
+    values: number[];
+  };
 }
 
-export const SalesChart: React.FC<SalesChartProps> = ({ data = [] }) => {
-  const chartData =
-    data.length > 0
-      ? data
-      : [
-          { name: 'Jan', value: 4000 },
-          { name: 'Feb', value: 3000 },
-          { name: 'Mar', value: 5000 },
-          { name: 'Apr', value: 7000 },
-          { name: 'May', value: 6000 },
-          { name: 'Jun', value: 8000 },
-        ];
+export const SalesChart: React.FC<SalesChartProps> = ({ data }) => {
+  // Convert data to chart format
+  const chartData = data?.labels?.map((label, index) => ({
+    name: label,
+    value: data?.values?.[index] || 0,
+  })) || [
+    { name: 'Jan', value: 4000 },
+    { name: 'Feb', value: 3000 },
+    { name: 'Mar', value: 5000 },
+    { name: 'Apr', value: 7000 },
+    { name: 'May', value: 6000 },
+    { name: 'Jun', value: 8000 },
+  ];
 
   return (
     <div className="bg-white rounded-[14px] shadow-[6px_6px_54px_rgba(0,0,0,0.05)] p-6">

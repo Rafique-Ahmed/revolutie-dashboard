@@ -13,7 +13,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Request interceptor - Add token to every request
+// Request interceptor
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -25,12 +25,11 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor - Handle 401 errors
+// Response interceptor
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid
       localStorage.removeItem('token');
       useAuthStore.getState().logout();
       window.location.href = '/login';
