@@ -1,6 +1,7 @@
 // src/pages/auth/components/LoginForm.tsx
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Mail, Lock } from 'lucide-react';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { Input } from '../../../components/ui/Input';
@@ -23,6 +24,8 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, register, errors, isLoading, error }) => {
+  const navigate = useNavigate();
+
   return (
     <motion.form
       variants={staggerContainer}
@@ -65,8 +68,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, register, errors, isLoa
         />
       </motion.div>
 
-      <motion.div variants={fadeInUp} className="w-full">
+      <motion.div variants={fadeInUp} className="w-full flex items-center justify-between">
         <Checkbox label="Keep me logged in" {...register('remember')} disabled={isLoading} />
+        <button
+          type="button"
+          onClick={() => navigate('/forgot-password')}
+          className="text-[#367AFF] hover:text-[#2868E6] text-sm font-medium transition-colors"
+        >
+          Forgot password?
+        </button>
       </motion.div>
 
       <motion.div variants={fadeInUp} className="w-full">

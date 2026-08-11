@@ -15,15 +15,17 @@ import { pageVariants, fadeInUp, staggerContainer } from '../../lib/utils';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 
-const registerSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-  password_confirmation: z.string(),
-}).refine((data) => data.password === data.password_confirmation, {
-  message: "Passwords don't match",
-  path: ['password_confirmation'],
-});
+const registerSchema = z
+  .object({
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    email: z.string().email('Please enter a valid email address'),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
+    password_confirmation: z.string(),
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: "Passwords don't match",
+    path: ['password_confirmation'],
+  });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -125,13 +127,14 @@ const Register: React.FC = () => {
           className="flex py-0 px-0 lg:px-16 flex-col justify-center items-start gap-8 w-full h-full mt-8"
         >
           {/* Header */}
-          <motion.div variants={fadeInUp} className="flex flex-col justify-center items-start gap-3 w-full">
+          <motion.div
+            variants={fadeInUp}
+            className="flex flex-col justify-center items-start gap-3 w-full"
+          >
             <h1 className="text-[#232323] font-inter text-[40px] font-bold leading-[1.1em] tracking-[-0.04em]">
               Create Account
             </h1>
-            <p className="text-[#969696] font-inter text-lg">
-              Start your journey with us today.
-            </p>
+            <p className="text-[#969696] font-inter text-lg">Start your journey with us today.</p>
           </motion.div>
 
           {/* Register Form */}
@@ -186,20 +189,20 @@ const Register: React.FC = () => {
               {password && password.length > 0 && (
                 <div className="mt-1">
                   <div className="flex items-center gap-2">
-                    <div className={`h-1 flex-1 rounded ${
-                      password.length < 6 ? 'bg-red-500' :
-                      password.length < 8 ? 'bg-yellow-500' :
-                      'bg-green-500'
-                    }`} />
+                    <div
+                      className={`h-1 flex-1 rounded ${
+                        password.length < 6
+                          ? 'bg-red-500'
+                          : password.length < 8
+                            ? 'bg-yellow-500'
+                            : 'bg-green-500'
+                      }`}
+                    />
                     <span className="text-xs text-gray-500">
-                      {password.length < 6 ? 'Weak' :
-                       password.length < 8 ? 'Fair' :
-                       'Strong'}
+                      {password.length < 6 ? 'Weak' : password.length < 8 ? 'Fair' : 'Strong'}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Minimum 8 characters
-                  </p>
+                  <p className="text-xs text-gray-400 mt-1">Minimum 8 characters</p>
                 </div>
               )}
             </motion.div>
@@ -216,13 +219,7 @@ const Register: React.FC = () => {
             </motion.div>
 
             <motion.div variants={fadeInUp} className="w-full">
-              <Button
-                type="submit"
-                variant="primary"
-                size="xl"
-                fullWidth
-                disabled={isLoading}
-              >
+              <Button type="submit" variant="primary" size="xl" fullWidth disabled={isLoading}>
                 {isLoading ? 'Creating account...' : 'Create Account'}
               </Button>
             </motion.div>
