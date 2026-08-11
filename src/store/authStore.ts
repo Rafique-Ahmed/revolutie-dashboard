@@ -118,7 +118,7 @@ export const useAuthStore = create<AuthState>()(
           await authApi.logout();
           toast.success('Logged out successfully');
         } catch {
-          console.warn('Logout error');
+          toast.error('Logout failed. Please try again.');
         } finally {
           localStorage.removeItem('token');
           set({

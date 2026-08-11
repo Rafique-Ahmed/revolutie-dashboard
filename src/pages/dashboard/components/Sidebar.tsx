@@ -1,6 +1,7 @@
 // src/pages/dashboard/components/Sidebar.tsx
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import {
   LayoutDashboard,
   Users,
@@ -23,6 +24,7 @@ import {
   FileText,
   UserPlus,
 } from 'lucide-react';
+import { useAuthStore } from '../../../store/authStore';
 
 interface SubNavItem {
   path: string;
@@ -96,7 +98,10 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
+  const navigate = useNavigate();
+  const { logout } = useAuthStore();
   const [expandedItems, setExpandedItems] = useState<string[]>(['Dashboard', 'Settings', 'System']);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const toggleExpand = (label: string) => {
     setExpandedItems((prev) =>
@@ -105,6 +110,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
   };
 
   const isExpanded = (label: string) => expandedItems.includes(label);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+      navigate('/login');
+    } catch {
+      toast.error('Logout failed. Please try again.');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <aside
@@ -214,20 +231,32 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
         </nav>
       </div>
 
+      {/* Logout - Fixed at bottom */}
       <div className={`flex-shrink-0 border-t border-gray-100 bg-white p-2`}>
         <button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
           className={`flex items-center h-12 rounded-md text-[#202224] hover:bg-gray-100 transition-colors ${
             isCollapsed ? 'justify-center mx-2' : 'px-4 mx-3'
-          }`}
+          } ${isLoggingOut ? 'opacity-50 cursor-not-allowed' : ''}`}
           title={isCollapsed ? 'Logout' : undefined}
         >
           <span className="flex-shrink-0">
-            <LogOut className="w-5 h-5" />
+            {isLoggingOut ? (
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#202224]"></div>
+            ) : (
+              <LogOut className="w-5 h-5" />
+            )}
           </span>
-          {!isCollapsed && <span className="text-sm font-semibold ml-4">Logout</span>}
+          {!isCollapsed && (
+            <span className="text-sm font-semibold ml-4">
+              {isLoggingOut ? 'Logging out...' : 'Logout'}
+            </span>
+          )}
         </button>
       </div>
 
+      {/* Toggle Button */}
       <button
         onClick={onToggle}
         className="absolute -right-3 top-20 w-6 h-6 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition-all duration-300 z-10"
