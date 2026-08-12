@@ -1,16 +1,43 @@
 // src/routes/modules/settings.routes.tsx
-const GeneralSettings = () => <div className="text-2xl font-bold p-6">General Settings</div>;
-const ProfileSettings = () => <div className="text-2xl font-bold p-6">Profile Settings</div>;
-const SecuritySettings = () => <div className="text-2xl font-bold p-6">Security Settings</div>;
-const NotificationPreferences = () => (
-  <div className="text-2xl font-bold p-6">Notification Preferences</div>
-);
-const TeamManagement = () => <div className="text-2xl font-bold p-6">Team Management</div>;
+import { RouteObject } from 'react-router-dom';
+import SettingsLayout from '../../pages/settings/SettingsLayout';
+import GeneralSettings from '../../pages/settings/GeneralSettings';
+import ProfileSettings from '../../pages/settings/ProfileSettings';
+import SecuritySettings from '../../pages/settings/SecuritySettings';
+import NotificationSettings from '../../pages/settings/NotificationSettings';
+import TeamSettings from '../../pages/settings/TeamSettings';
 
-export const settingsRoutes = [
-  { path: '/settings/general', element: <GeneralSettings /> },
-  { path: '/settings/profile', element: <ProfileSettings /> },
-  { path: '/settings/security', element: <SecuritySettings /> },
-  { path: '/settings/notifications', element: <NotificationPreferences /> },
-  { path: '/settings/team', element: <TeamManagement /> },
+export const settingsRoutes: RouteObject[] = [
+  {
+    path: 'settings',
+    element: <SettingsLayout />,
+    children: [
+      {
+        index: true,
+        element: <GeneralSettings />,
+      },
+      {
+        path: 'general',
+        element: <GeneralSettings />,
+      },
+      {
+        path: 'profile',
+        element: <ProfileSettings />,
+      },
+      {
+        path: 'security',
+        element: <SecuritySettings />,
+      },
+      {
+        path: 'notifications',
+        element: <NotificationSettings />,
+      },
+      {
+        path: 'team',
+        element: <TeamSettings />,
+      },
+    ],
+  },
 ];
+
+export default settingsRoutes;
