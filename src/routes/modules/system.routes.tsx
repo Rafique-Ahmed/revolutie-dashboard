@@ -1,10 +1,33 @@
 // src/routes/modules/system.routes.tsx
-const SystemLogs = () => <div className="text-2xl font-bold p-6">System Logs</div>;
-const ApiStatus = () => <div className="text-2xl font-bold p-6">API Status</div>;
-const Backups = () => <div className="text-2xl font-bold p-6">Backups</div>;
+import { RouteObject } from 'react-router-dom';
+import SystemLayout from '../../pages/system/SystemLayout';
+import SystemLogs from '../../pages/system/SystemLogs';
+import ApiStatus from '../../pages/system/ApiStatus';
+import Backups from '../../pages/system/Backups';
 
-export const systemRoutes = [
-  { path: '/system/logs', element: <SystemLogs /> },
-  { path: '/system/status', element: <ApiStatus /> },
-  { path: '/system/backups', element: <Backups /> },
+export const systemRoutes: RouteObject[] = [
+  {
+    path: 'system',
+    element: <SystemLayout />,
+    children: [
+      {
+        index: true,
+        element: <SystemLogs />,
+      },
+      {
+        path: 'logs',
+        element: <SystemLogs />,
+      },
+      {
+        path: 'status',
+        element: <ApiStatus />,
+      },
+      {
+        path: 'backups',
+        element: <Backups />,
+      },
+    ],
+  },
 ];
+
+export default systemRoutes;
