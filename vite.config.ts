@@ -11,11 +11,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
 
   return {
     plugins: [
-      react({
-        // ✅ Remove 'fastRefresh' - it's not needed
-        // React Fast Refresh is enabled by default
-      }),
-      // Bundle analyzer (only in analyze mode)
+      react(),
       isAnalyze && visualizer({
         filename: 'dist/stats.html',
         open: true,
@@ -50,14 +46,33 @@ export default defineConfig(({ mode }: ConfigEnv) => {
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          manualChunks: {
-            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-            'ui-vendor': ['lucide-react', 'framer-motion'],
-            'form-vendor': ['react-hook-form', 'zod', '@hookform/resolvers'],
-            'chart-vendor': ['recharts'],
-            'state-vendor': ['zustand'],
-            'api-vendor': ['axios'],
-            'utils-vendor': ['clsx', 'tailwind-merge', 'date-fns'],
+          // ✅ Fix: Use a function instead of an object for manualChunks
+          manualChunks: (id: string) => {
+            if (id.includes('node_modules')) {
+              if (id.includes('react')) {
+                return 'react-vendor';
+              }
+              if (id.includes('lucide-react') || id.includes('framer-motion')) {
+                return 'ui-vendor';
+              }
+              if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform/resolvers')) {
+                return 'form-vendor';
+              }
+              if (id.includes('recharts')) {
+                return 'chart-vendor';
+              }
+              if (id.includes('zustand')) {
+                return 'state-vendor';
+              }
+              if (id.includes('axios')) {
+                return 'api-vendor';
+              }
+              if (id.includes('clsx') || id.includes('tailwind-merge') || id.includes('date-fns')) {
+                return 'utils-vendor';
+              }
+              return 'vendor';
+            }
+            return 'main';
           },
           assetFileNames: 'assets/[name].[hash][extname]',
           chunkFileNames: 'assets/[name].[hash].js',
@@ -107,12 +122,11 @@ export default defineConfig(({ mode }: ConfigEnv) => {
 
     envPrefix: 'VITE_',
 
-    // ✅ Fix esbuild configuration
-    esbuild: {
-      // Only drop console in production
-      drop: isProduction ? ['console', 'debugger'] : [],
-      // Keep names for better debugging
-      keepNames: true,
-    },
+    // ✅ Fix: Use oxc instead of esbuild (since Vite 8 uses Rolldown)
+    // Remove or comment out esbuild options if using oxc
+    // esbuild: {
+    //   drop: isProduction ? ['console', 'debugger'] : [],
+    //   keepNames: true,
+    // },
   };
 });
