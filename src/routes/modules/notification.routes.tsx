@@ -1,4 +1,12 @@
 // src/routes/modules/notification.routes.tsx
-const Notifications = () => <div className="text-2xl font-bold p-6">Notifications</div>;
+import { RouteObject } from 'react-router-dom';
+import NotificationsList from '../../pages/notifications/NotificationsList';
 
-export const notificationRoutes = [{ path: '/notifications', element: <Notifications /> }];
+export const notificationRoutes: RouteObject[] = [
+  {
+    path: 'notifications',
+    element: <NotificationsList />,
+  },
+];
+
+export default notificationRoutes;
