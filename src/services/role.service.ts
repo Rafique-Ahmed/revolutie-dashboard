@@ -217,4 +217,7 @@ export class RoleService {
   }
 }
 
+// ✅ Make sure this export exists at the bottom
 export const roleService = new RoleService();
+// Also export as default for flexibility
+export default roleService;

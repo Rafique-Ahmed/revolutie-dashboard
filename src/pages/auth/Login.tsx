@@ -48,18 +48,14 @@ const Login: React.FC = () => {
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     clearError();
-    console.warn('🔐 Login attempt:', { email: data.email, remember: data.remember });
 
     try {
-      const result = await login(data.email, data.password, data.remember);
-      console.warn('✅ Login result:', result);
-
-      if (result.success) {
-        setIsRedirecting(true);
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 1500);
-      }
+      // ✅ Fix: Pass the data object as expected by authStore
+      await login({ email: data.email, password: data.password });
+      setIsRedirecting(true);
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
     } catch (error) {
       console.error('❌ Login error:', error);
     }

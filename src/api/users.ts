@@ -1,35 +1,98 @@
 // src/api/users.ts
 import api from './client';
-import type { User, ApiResponse, PaginatedResponse } from './types';
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  email_verified_at?: string | null;
+  avatar?: string | null;
+  roles?: string[];
+  permissions?: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateUserData {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  roles?: string[];
+}
+
+export interface UpdateUserData {
+  name?: string;
+  email?: string;
+  password?: string;
+  password_confirmation?: string;
+  roles?: string[];
+}
 
 export const usersApi = {
-  getAll: (params?: Record<string, string | number>) =>
-    api.get<PaginatedResponse<User>>('/users', { params }),
+  // Get all users
+  getUsers: async (params?: { page?: number; per_page?: number; search?: string }) => {
+    const response = await api.get('/users', { params });
+    return response.data;
+  },
 
-  getById: (id: number) => api.get<ApiResponse<User>>(`/users/${id}`),
+  // Get single user
+  getUser: async (id: number) => {
+    const response = await api.get(`/users/${id}`);
+    return response.data.data;
+  },
 
-  create: (data: Partial<User>) => api.post<ApiResponse<User>>('/users', data),
+  // Create user
+  createUser: async (data: CreateUserData) => {
+    const response = await api.post('/users', data);
+    return response.data.data;
+  },
 
-  update: (id: number, data: Partial<User>) => api.put<ApiResponse<User>>(`/users/${id}`, data),
+  // Update user
+  updateUser: async (id: number, data: UpdateUserData) => {
+    const response = await api.put(`/users/${id}`, data);
+    return response.data.data;
+  },
 
-  delete: (id: number) => api.delete<ApiResponse<null>>(`/users/${id}`),
+  // Delete user
+  deleteUser: async (id: number) => {
+    const response = await api.delete(`/users/${id}`);
+    return response.data;
+  },
 
-  getStats: () =>
-    api.get<
-      ApiResponse<{
-        total: number;
-        active: number;
-        pending: number;
-        suspended: number;
-        new_today: number;
-      }>
-    >('/users/stats'),
-
-  uploadAvatar: (id: number, file: File) => {
+  // Upload avatar
+  uploadAvatar: async (id: number, file: File) => {
     const formData = new FormData();
     formData.append('avatar', file);
-    return api.post<ApiResponse<{ avatar_url: string }>>(`/users/${id}/avatar`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    const response = await api.post(`/users/${id}/avatar`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
+    return response.data.data;
+  },
+
+  // Get user activities
+  getUserActivities: async (id: number) => {
+    const response = await api.get(`/users/${id}/activities`);
+    return response.data.data;
+  },
+
+  // Assign roles to user
+  assignRoles: async (id: number, roles: string[]) => {
+    const response = await api.post(`/users/${id}/roles`, { roles });
+    return response.data.data;
+  },
+
+  // Sync roles for user (replace all roles)
+  syncRoles: async (id: number, roles: string[]) => {
+    const response = await api.put(`/users/${id}/roles`, { roles });
+    return response.data.data;
+  },
+
+  // Remove a role from user
+  removeRole: async (id: number, role: string) => {
+    const response = await api.delete(`/users/${id}/roles/${role}`);
+    return response.data.data;
   },
 };

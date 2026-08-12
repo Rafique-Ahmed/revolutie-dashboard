@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserProfile as UserProfileType } from '../../types/userProfile';
 import { userProfileService } from '../../services/userProfile.service';
-import { Camera, Save, Edit2, Mail, MapPin, Briefcase, Link as LinkIcon } from 'lucide-react';
+import { Camera, Save, Edit2, Mail, MapPin, Briefcase, Link as LinkIcon, User } from 'lucide-react';
 
 const UserProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -103,7 +103,10 @@ const UserProfile: React.FC = () => {
           <div className="flex flex-col items-center mb-8">
             <div className="relative w-24 h-24">
               <img
-                src={profile.avatar_url}
+                src={
+                  profile.avatar_url ||
+                  `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name)}&size=96&background=4880FF&color=fff`
+                }
                 alt={profile.name}
                 className="w-24 h-24 rounded-full object-cover shadow-lg"
               />
@@ -153,7 +156,8 @@ const UserProfile: React.FC = () => {
                   className="w-full px-4 py-3 border border-[#D5D5D5] rounded-lg focus:outline-none focus:border-blue-500"
                 />
               ) : (
-                <p className="text-sm text-[#202224] px-4 py-3 bg-[#F5F6FA] rounded-lg">
+                <p className="text-sm text-[#202224] px-4 py-3 bg-[#F5F6FA] rounded-lg flex items-center gap-2">
+                  <User className="w-4 h-4 text-gray-400" />
                   {profile.name}
                 </p>
               )}
