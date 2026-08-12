@@ -1,44 +1,58 @@
 // src/pages/dashboard/components/KpiCard.tsx
-import React from 'react';
+import React, { memo } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 
 interface KpiCardProps {
   title: string;
   value: string | number;
-  change: string;
-  changeType: 'up' | 'down';
+  change?: number;
   icon: React.ReactNode;
-  iconBg?: string;
+  color?: string;
 }
 
-export const KpiCard: React.FC<KpiCardProps> = ({
-  title,
-  value,
-  change,
-  changeType,
-  icon,
-  iconBg = 'bg-[#8280FF]/20',
-}) => {
-  const isUp = changeType === 'up';
+const KpiCard: React.FC<KpiCardProps> = memo(
+  ({ title, value, change, icon, color = 'bg-[#4880FF]' }) => {
+    const isPositive = change && change > 0;
+    const isNegative = change && change < 0;
 
-  return (
-    <div className="bg-white rounded-[14px] shadow-[6px_6px_54px_rgba(0,0,0,0.05)] p-4">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-[#202224] text-base font-semibold opacity-70">{title}</p>
-          <p className="text-[#202224] text-[28px] font-bold tracking-[0.0357em]">{value}</p>
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow"
+      >
+        <div className="flex items-center justify-between">
+          <div className={`p-3 rounded-lg ${color} bg-opacity-10 dark:bg-opacity-20`}>
+            <div className={`${color} text-opacity-100`}>{icon}</div>
+          </div>
+          {change !== undefined && change !== 0 && (
+            <div
+              className={`flex items-center gap-1 text-sm font-medium ${
+                isPositive
+                  ? 'text-green-600 dark:text-green-400'
+                  : isNegative
+                    ? 'text-red-600 dark:text-red-400'
+                    : 'text-gray-500 dark:text-gray-400'
+              }`}
+            >
+              {isPositive && <ArrowUp className="w-4 h-4" />}
+              {isNegative && <ArrowDown className="w-4 h-4" />}
+              {Math.abs(change)}%
+            </div>
+          )}
         </div>
-        <div
-          className={`w-[60px] h-[60px] rounded-[23px] ${iconBg} flex items-center justify-center`}
-        >
-          {icon}
+
+        <div className="mt-4">
+          <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
+          <p className="text-2xl font-bold text-[#202224] dark:text-white mt-1">{value}</p>
         </div>
-      </div>
-      <div className="flex items-center gap-2 mt-2">
-        <span className={`text-sm font-semibold ${isUp ? 'text-[#00B69B]' : 'text-[#F93C65]'}`}>
-          {change}
-        </span>
-        <span className="text-[#606060] text-base font-semibold">from yesterday</span>
-      </div>
-    </div>
-  );
-};
+      </motion.div>
+    );
+  }
+);
+
+KpiCard.displayName = 'KpiCard';
+
+export default KpiCard;

@@ -1,0 +1,90 @@
+// .eslintrc.cjs
+module.exports = {
+  root: true,
+  ignorePatterns: [
+    'dist',
+    'node_modules',
+    'vite.config.ts',
+    'vite.config.analyze.ts',
+    'vite.config.analyze.js',
+    'vite.config.analyze.cjs',
+    'vite.config.analyze.mjs',
+    '*.config.js',
+    '*.config.cjs',
+    '*.config.mjs',
+    'tailwind.config.js',
+    'postcss.config.js',
+    '.eslintrc.cjs',
+    '*.d.ts',
+  ],
+  env: {
+    browser: true,
+    es2020: true,
+    node: true,
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:prettier/recommended',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: ['react-refresh'],
+  rules: {
+    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  overrides: [
+    {
+      files: [
+        'vite.config.ts',
+        'vite.config.analyze.ts',
+        'vite.config.analyze.js',
+        'vite.config.analyze.cjs',
+        'vite.config.analyze.mjs',
+        '*.config.js',
+        '*.config.cjs',
+        '*.config.mjs',
+        'tailwind.config.js',
+        'postcss.config.js',
+        '.eslintrc.cjs',
+      ],
+      parserOptions: {
+        project: false,
+      },
+      rules: {
+        '@typescript-eslint/no-unsafe-argument': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/no-require-imports': 'off',
+        '@typescript-eslint/no-floating-promises': 'off',
+        '@typescript-eslint/no-misused-promises': 'off',
+        'no-undef': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+        'prettier/prettier': 'off',
+      },
+    },
+  ],
+};
