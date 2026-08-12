@@ -62,23 +62,23 @@ const Register: React.FC = () => {
     console.warn('📝 Register attempt:', { email: data.email, name: data.name });
 
     try {
-      const result = await registerUser({
+      await registerUser({
         name: data.name,
         email: data.email,
         password: data.password,
         password_confirmation: data.password_confirmation,
       });
 
-      console.warn('✅ Register result:', result);
+      console.warn('✅ Register successful');
 
-      if (result.success) {
+      if (!error) {
         setIsRedirecting(true);
         setTimeout(() => {
           navigate('/dashboard');
         }, 1500);
       }
-    } catch (error) {
-      console.error('❌ Register error:', error);
+    } catch (err) {
+      console.error('❌ Register error:', err);
     }
   };
 

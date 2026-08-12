@@ -121,7 +121,7 @@ const UserEditModal: React.FC<{
         email: formData.email,
         status: formData.status,
       });
-      await userService.syncRoles(user.id, selectedRoles);
+      await userService.assignRoles(user.id, selectedRoles);
       toast.success('User updated successfully!');
       onSuccess();
       onClose();

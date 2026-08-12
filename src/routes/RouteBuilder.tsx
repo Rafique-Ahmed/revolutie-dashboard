@@ -1,37 +1,44 @@
 // src/routes/RouteBuilder.tsx
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
-import { AnimatedLayout } from '../components/layout/AnimatedLayout';
-import { allRoutes } from './index';
+import { RouteObject, Routes, Route, useLocation } from 'react-router-dom';
 
-interface RouteConfig {
-  path: string;
-  element: React.ReactNode;
-  children?: RouteConfig[];
+interface RouteBuilderProps {
+  routes?: RouteObject[]; // ✅ Make routes optional
 }
 
-export const RouteBuilder = () => {
+export const RouteBuilder: React.FC<RouteBuilderProps> = ({ routes = [] }) => {
   const location = useLocation();
 
-  const renderRoutes = (routes: RouteConfig[]) => {
-    return routes.map((route, index) => {
-      if (route.children) {
+  // Recursive function to render routes
+  const renderRoutes = (routesArray: RouteObject[]): React.ReactNode => {
+    // ✅ Check if routesArray exists and is an array
+    if (!routesArray || !Array.isArray(routesArray)) {
+      return null;
+    }
+
+    return routesArray.map((route, index) => {
+      // ✅ Check if route exists
+      if (!route) {
+        return null;
+      }
+
+      if (route.children && route.children.length > 0) {
         return (
-          <Route key={index} path={route.path} element={route.element}>
+          <Route key={route.path || index} path={route.path} element={route.element}>
             {renderRoutes(route.children)}
           </Route>
         );
       }
-      return <Route key={index} path={route.path} element={route.element} />;
+      return <Route key={route.path || index} path={route.path} element={route.element} />;
     });
   };
 
-  return (
-    <AnimatePresence mode="wait">
-      <AnimatedLayout key={location.pathname}>
-        <Routes location={location}>{renderRoutes(allRoutes)}</Routes>
-      </AnimatedLayout>
-    </AnimatePresence>
-  );
+  // ✅ Only render if routes exist
+  if (!routes || routes.length === 0) {
+    return null;
+  }
+
+  return <Routes location={location}>{renderRoutes(routes)}</Routes>;
 };
+
+export default RouteBuilder;

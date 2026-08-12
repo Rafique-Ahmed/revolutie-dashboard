@@ -9,6 +9,7 @@ export interface User {
   status: 'active' | 'pending' | 'suspended' | 'completed' | 'processing' | 'rejected';
   avatar?: string;
   role?: string;
+  roles?: Array<string | { name: string }>; // ✅ Add this
   created_at?: string;
   updated_at?: string;
 }

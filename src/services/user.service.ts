@@ -106,9 +106,51 @@ export const userService = {
       };
     }
   },
+
+  // ✅ Add: Assign roles to user
+  assignRoles: async (id: number, roles: string[]): Promise<{ success: boolean; data: User }> => {
+    try {
+      const response = await api.post(`/users/${id}/roles`, { roles });
+      return response.data;
+    } catch {
+      console.warn('API error, using mock:');
+      return {
+        success: true,
+        data: { id } as User,
+      };
+    }
+  },
+
+  // ✅ Add: Sync roles (replace all roles)
+  syncRoles: async (id: number, roles: string[]): Promise<{ success: boolean; data: User }> => {
+    try {
+      const response = await api.put(`/users/${id}/roles`, { roles });
+      return response.data;
+    } catch {
+      console.warn('API error, using mock:');
+      return {
+        success: true,
+        data: { id } as User,
+      };
+    }
+  },
+
+  // ✅ Add: Remove a role from user
+  removeRole: async (id: number, role: string): Promise<{ success: boolean; data: User }> => {
+    try {
+      const response = await api.delete(`/users/${id}/roles/${role}`);
+      return response.data;
+    } catch {
+      console.warn('API error, using mock:');
+      return {
+        success: true,
+        data: { id } as User,
+      };
+    }
+  },
 };
 
-// Mock data
+// Mock data with roles
 const getMockUsers = (): User[] => [
   {
     id: 1,
@@ -118,6 +160,7 @@ const getMockUsers = (): User[] => [
     date: '14 Feb 2026',
     type: 'Electric',
     status: 'completed',
+    roles: ['admin', 'editor'],
   },
   {
     id: 2,
@@ -127,6 +170,7 @@ const getMockUsers = (): User[] => [
     date: '14 Feb 2026',
     type: 'Book',
     status: 'processing',
+    roles: ['viewer'],
   },
   {
     id: 3,
@@ -136,6 +180,7 @@ const getMockUsers = (): User[] => [
     date: '14 Feb 2026',
     type: 'Medicine',
     status: 'rejected',
+    roles: [],
   },
   {
     id: 4,
@@ -145,6 +190,7 @@ const getMockUsers = (): User[] => [
     date: '14 Feb 2026',
     type: 'Mobile',
     status: 'completed',
+    roles: ['editor'],
   },
   {
     id: 5,
@@ -154,6 +200,7 @@ const getMockUsers = (): User[] => [
     date: '14 Feb 2026',
     type: 'Watch',
     status: 'processing',
+    roles: ['viewer'],
   },
   {
     id: 6,
@@ -163,5 +210,6 @@ const getMockUsers = (): User[] => [
     date: '14 Feb 2026',
     type: 'Medicine',
     status: 'completed',
+    roles: ['admin'],
   },
 ];

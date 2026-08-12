@@ -83,7 +83,10 @@ const NotificationsList: React.FC = () => {
 
   const handleClearAll = async () => {
     if (notifications.length === 0) {
-      toast.info('No notifications to clear');
+      toast('No notifications to clear', {
+        icon: 'ℹ️',
+        duration: 3000,
+      });
       return;
     }
 
