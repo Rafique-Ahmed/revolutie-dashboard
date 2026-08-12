@@ -1,4 +1,16 @@
 // src/routes/modules/role.routes.tsx
-const Roles = () => <div className="text-2xl font-bold p-6">Roles Management</div>;
+import { RouteObject } from 'react-router-dom';
+import RolesList from '../../pages/roles/RolesList';
 
-export const roleRoutes = [{ path: '/roles', element: <Roles /> }];
+// Your existing role routes (if any)
+// If you have existing role management routes, keep them here
+
+export const roleRoutes: RouteObject[] = [
+  {
+    path: 'roles',
+    element: <RolesList />, // ✅ This will render the new Roles & Permissions UI
+  },
+  // Add any other role-related routes here
+];
+
+export default roleRoutes;

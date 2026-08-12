@@ -4,7 +4,7 @@ import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 import { authRoutes } from './modules/auth.routes';
 import { dashboardRoutes } from './modules/dashboard.routes';
 import { userRoutes } from './modules/user.routes';
-import { roleRoutes } from './modules/role.routes';
+import { roleRoutes } from './modules/role.routes'; // ✅ Only one import
 import { notificationRoutes } from './modules/notification.routes';
 import { settingsRoutes } from './modules/settings.routes';
 import { systemRoutes } from './modules/system.routes';
@@ -14,7 +14,7 @@ import { notFoundRoutes } from './modules/notfound.routes';
 const protectedRoutes = [
   ...dashboardRoutes,
   ...userRoutes,
-  ...roleRoutes,
+  ...roleRoutes, // ✅ Single role routes
   ...notificationRoutes,
   ...settingsRoutes,
   ...systemRoutes,
